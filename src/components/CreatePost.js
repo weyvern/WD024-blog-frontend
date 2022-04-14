@@ -20,7 +20,8 @@ const CreatePost = () => {
       const data = JSON.stringify({ title, author, image, body });
       const { data: newPost } = await axios.post(`${process.env.REACT_APP_BLOG_API_URL}/posts`, data, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('token')
         }
       });
       navigate(`/post/${newPost._id}`);

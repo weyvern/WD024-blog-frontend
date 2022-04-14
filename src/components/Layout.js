@@ -1,8 +1,10 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { useAuth } from '../context/AuthContext';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = () => {
+  const { isAuthenticated, user, logout } = useAuth();
   return (
     <>
       <ToastContainer />
@@ -26,12 +28,7 @@ const Layout = () => {
             <ul className='navbar-nav ms-auto'>
               <li className='nav-item'>
                 <NavLink to='/' className='nav-link'>
-                  Home
-                </NavLink>
-              </li>
-              <li className='nav-item'>
-                <NavLink to='/new-post' className='nav-link'>
-                  Create post
+                  {user ? `Welcome back, ${user.name}` : 'Home'}
                 </NavLink>
               </li>
               <li className='nav-item'>
@@ -39,6 +36,33 @@ const Layout = () => {
                   About
                 </NavLink>
               </li>
+              {isAuthenticated ? (
+                <>
+                  <li className='nav-item'>
+                    <NavLink to='/protected/new-post' className='nav-link'>
+                      Create post
+                    </NavLink>
+                  </li>
+                  <li className='nav-item'>
+                    <p className='nav-link' style={{ cursor: 'pointer' }} onClick={logout}>
+                      Logout
+                    </p>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className='nav-item'>
+                    <NavLink to='/register' className='nav-link'>
+                      Register
+                    </NavLink>
+                  </li>
+                  <li className='nav-item'>
+                    <NavLink to='/login' className='nav-link'>
+                      Login
+                    </NavLink>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>
